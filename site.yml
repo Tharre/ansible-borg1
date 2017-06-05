@@ -1,0 +1,34 @@
+---
+- name: Install borg1 stuff
+  hosts: all
+  become: true
+  roles:
+    - role: teamspeak
+      teamspeak:
+        user: "ts3"
+        comment: "Teamspeak 3 user"
+        home: "/srv/ts3"
+        shell: "/usr/sbin/nologin"
+        symlink: "current"
+        version: "3.0.13.6"
+        checksum: "sha256:19ccd8db5427758d972a864b70d4a1263ebb9628fcc42c3de75ba87de105d179"
+        keep: 3
+      teamspeak_restore_db_path: "~/var/backups/server-backup/bak/ts3server-2017.06.05.sqlitedb.bak"
+      teamspeak_restore_files_path: "~/var/backups/server-backup/bak/files-2017.06.05.tar.gz"
+    - enable-standard-cronjobs
+    - role: unattended-upgrades
+      unattended_origins_patterns:
+      - 'origin=Debian,codename=${distro_codename},label=Debian-Security'
+      - 'origin=Debian,codename=${distro_codename},label=Debian'
+      unattended_mail: 'root'
+      unattended_remove_unused_dependencies: true
+      unattended_automatic_reboot: true
+      unattended_automatic_reboot_time: '12:00'
+    - role: postfix
+      postfix_aliases:
+      - user: root
+        alias: tharre3@gmail.com
+    #- role: gitolite
+      #gitolite_repositories_custom:
+        #- repo: toast
+          #admin: ["id_rsa", "{{ gitolite_user_name }}"]
