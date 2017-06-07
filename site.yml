@@ -24,11 +24,9 @@
       unattended_remove_unused_dependencies: true
       unattended_automatic_reboot: true
       unattended_automatic_reboot_time: '12:00'
+    - role: gitolite
+      git_config_keys: ".*"
     - role: postfix
       postfix_aliases:
       - user: root
         alias: tharre3@gmail.com
-    #- role: gitolite
-      #gitolite_repositories_custom:
-        #- repo: toast
-          #admin: ["id_rsa", "{{ gitolite_user_name }}"]

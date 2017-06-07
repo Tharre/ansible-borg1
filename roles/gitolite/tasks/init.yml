@@ -1,0 +1,13 @@
+---
+- name: Copy admin key
+  copy:
+    src: "{{ git_admin_key }}"
+    dest: "{{ git_dir }}/admin.pub"
+    mode: 0600
+    owner: "{{ git_user }}"
+    group: "{{ git_group }}"
+
+- name: Configure gitolite
+  command: gitolite setup -pk "{{ git_dir }}/admin.pub"
+  become: yes
+  become_user: "{{ git_user }}"
