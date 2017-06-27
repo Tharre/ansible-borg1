@@ -2,6 +2,11 @@
 - name: Install borg1 stuff
   hosts: all
   become: true
+  tasks:
+    - name: Set timezone
+      become: yes
+      timezone:
+        name: Europe/Amsterdam
   roles:
     - role: teamspeak
       teamspeak:
@@ -13,8 +18,8 @@
         version: "3.0.13.6"
         checksum: "sha256:19ccd8db5427758d972a864b70d4a1263ebb9628fcc42c3de75ba87de105d179"
         keep: 3
-      teamspeak_restore_db_path: "~/var/backups/server-backup/bak/ts3server-2017.06.05.sqlitedb.bak"
-      teamspeak_restore_files_path: "~/var/backups/server-backup/bak/files-2017.06.05.tar.gz"
+      teamspeak_restore_db_path: "~/var/backups/server-backup/bak/ts3server-latest.sqlitedb"
+      teamspeak_restore_files_path: "~/var/backups/server-backup/bak/files-latest.tar.gz"
     - enable-standard-cronjobs
     - role: unattended-upgrades
       unattended_origins_patterns:
