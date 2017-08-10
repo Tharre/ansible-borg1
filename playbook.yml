@@ -21,8 +21,10 @@
         keep: 3
       teamspeak_restore_db_path: "~/var/backups/server-backup/bak/ts3server-latest.sqlitedb"
       teamspeak_restore_files_path: "~/var/backups/server-backup/bak/files-latest.tar.gz"
-    - enable-standard-cronjobs
+    - role: enable-standard-cronjobs
+      tags: "debian"
     - role: unattended-upgrades
+      tags: "debian"
       unattended_origins_patterns:
       - 'origin=Debian,codename=${distro_codename},label=Debian-Security'
       - 'origin=Debian,codename=${distro_codename},label=Debian'
