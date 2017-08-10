@@ -9,6 +9,7 @@
         name: Europe/Amsterdam
   roles:
     - role: teamspeak
+      tags: "ts3"
       teamspeak:
         user: "ts3"
         comment: "Teamspeak 3 user"
@@ -30,6 +31,7 @@
       unattended_automatic_reboot: true
       unattended_automatic_reboot_time: '12:00'
     - role: gitolite
+      tags: "git"
       git_config_keys: ".*"
     - role: postfix
       postfix_aliases:
