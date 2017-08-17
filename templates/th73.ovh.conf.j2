@@ -7,8 +7,6 @@ server {
     server_name th73.ovh;
     index index.html index.htm;
 
-    include https_config*.conf;
-
     {% if nginx_disable_ssl is not defined %}
     ssl_certificate /etc/letsencrypt/live/th73.ovh-0001/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/th73.ovh-0001/privkey.pem;

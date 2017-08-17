@@ -8,8 +8,6 @@ server {
     root /usr/share/cgit;
     index index.html index.htm;
 
-    include https_config*.conf;
-
     {% if nginx_disable_ssl is not defined %}
     ssl_certificate /etc/letsencrypt/live/git.th73.ovh/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/git.th73.ovh/privkey.pem;
