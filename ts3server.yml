@@ -2,6 +2,11 @@
 - name: TS3 Server playbook
   hosts: all
   become: true
+  tasks:
+    - name: Install sqlite3 for teamspeak backups
+      package:
+        name: "sqlite3"
+        state: present
   roles:
     - role: teamspeak
       teamspeak:
