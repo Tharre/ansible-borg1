@@ -12,6 +12,8 @@
       postfix_aliases:
       - user: root
         alias: tharre3@gmail.com
+    - role: dotfiles
+      tags: "dotfiles"
 
 - include: debian.yml
 - include: ts3server.yml
