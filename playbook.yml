@@ -7,6 +7,10 @@
       become: yes
       timezone:
         name: Europe/Amsterdam
+    - name: Ensure cron is installed
+      package:
+        name: "cron"
+        state: present
   roles:
     - role: teamspeak
       tags: "ts3"
