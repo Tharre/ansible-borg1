@@ -7,39 +7,14 @@
       become: yes
       timezone:
         name: Europe/Amsterdam
-    - name: Ensure cron is installed
-      package:
-        name: "cron"
-        state: present
   roles:
-    - role: teamspeak
-      tags: "ts3"
-      teamspeak:
-        user: "ts3"
-        comment: "Teamspeak 3 user"
-        home: "/srv/ts3"
-        shell: "/usr/sbin/nologin"
-        symlink: "current"
-        version: "3.0.13.8"
-        checksum: "sha256:460c771bf58c9a49b4be2c677652f21896b98a021d7fff286e59679b3f987a59"
-        keep: 3
-      teamspeak_restore_db_path: "~/var/backups/server-backup/bak/ts3server-latest.sqlitedb"
-      teamspeak_restore_files_path: "~/var/backups/server-backup/bak/files-latest.tar.gz"
-    - role: enable-standard-cronjobs
-      tags: "debian"
-    - role: unattended-upgrades
-      tags: "debian"
-      unattended_origins_patterns:
-      - 'origin=Debian,codename=${distro_codename},label=Debian-Security'
-      - 'origin=Debian,codename=${distro_codename},label=Debian'
-      unattended_mail: 'root'
-      unattended_remove_unused_dependencies: true
-      unattended_automatic_reboot: true
-      unattended_automatic_reboot_time: '12:00'
-    - role: gitolite
-      tags: "git"
-      git_config_keys: ".*"
     - role: postfix
       postfix_aliases:
       - user: root
         alias: tharre3@gmail.com
+
+- include: debian.yml
+- include: ts3server.yml
+  tags: "ts3"
+- include: gitolite.yml
+  tags: "git"

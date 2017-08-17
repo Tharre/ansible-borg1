@@ -1,0 +1,7 @@
+---
+- name: Gitolite playbook
+  hosts: all
+  become: true
+  roles:
+    - role: gitolite
+      git_config_keys: ".*"

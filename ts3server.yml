@@ -1,0 +1,17 @@
+---
+- name: TS3 Server playbook
+  hosts: all
+  become: true
+  roles:
+    - role: teamspeak
+      teamspeak:
+        user: "ts3"
+        comment: "Teamspeak 3 user"
+        home: "/srv/ts3"
+        shell: "/usr/sbin/nologin"
+        symlink: "current"
+        version: "3.0.13.8"
+        checksum: "sha256:460c771bf58c9a49b4be2c677652f21896b98a021d7fff286e59679b3f987a59"
+        keep: 3
+      teamspeak_restore_db_path: "~/var/backups/server-backup/bak/ts3server-latest.sqlitedb"
+      teamspeak_restore_files_path: "~/var/backups/server-backup/bak/files-latest.tar.gz"

@@ -1,0 +1,21 @@
+---
+- name: Debian playbook
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure cron is installed
+      package:
+        name: "cron"
+        state: present
+  roles:
+    - role: enable-standard-cronjobs
+      tags: "debian"
+    - role: unattended-upgrades
+      tags: "debian"
+      unattended_origins_patterns:
+      - 'origin=Debian,codename=${distro_codename},label=Debian-Security'
+      - 'origin=Debian,codename=${distro_codename},label=Debian'
+      unattended_mail: 'root'
+      unattended_remove_unused_dependencies: true
+      unattended_automatic_reboot: true
+      unattended_automatic_reboot_time: '12:00'
