@@ -1,0 +1,12 @@
+# {{ ansible_managed }}
+
+server {
+    listen 8001;
+    server_name localhost;
+    index index.html index.htm;
+
+    location / {
+        proxy_pass http://mirror.nl.leaseweb.net/archlinux/;
+        proxy_set_header Host mirror.n1.leaseweb.net;
+    }
+}

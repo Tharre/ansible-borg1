@@ -18,3 +18,5 @@
   tags: "ts3"
 - include: gitolite.yml
   tags: "git"
+- include: webserver.yml
+  tags: "www"

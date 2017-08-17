@@ -22,6 +22,10 @@ Vagrant.configure(2) do |config|
   if which('ansible-playbook')
     config.vm.provision "ansible" do |ansible|
       ansible.verbose = "v"
+      ansible.skip_tags = "dhparam"
+      ansible.extra_vars = {
+        nginx_disable_ssl: true
+      }
       ansible.playbook = "playbook.yml"
     end
   else
@@ -29,6 +33,10 @@ Vagrant.configure(2) do |config|
       ansible.install_mode = "pip"
       ansible.version = "2.3.0.0"
       ansible.verbose = "v"
+      ansible.skip_tags = "dhparam"
+      ansible.extra_vars = {
+        nginx_disable_ssl: true
+      }
       ansible.playbook = "playbook.yml"
     end
   end

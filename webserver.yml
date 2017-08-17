@@ -1,0 +1,50 @@
+---
+- name: Webserver playbook
+  hosts: all
+  become: true
+  roles:
+    - role: dhparam
+      tags: "dhparam"
+    - role: nginx
+      # TODO: gzip settings
+      nginx_worker_processes: "auto"
+      nginx_proxy_cache_path: "/var/cache/nginx levels=1:2 keys_zone=arch-pkg-cache:8m max_size=50G inactive=1y"
+      nginx_upstreams:
+        - name: mirrors
+          servers: {
+            "localhost:8001",
+            #"localhost:8002 backup",
+            #"localhost:8003 backup"
+          }
+      nginx_vhosts:
+        - server_name: "_"
+          listen: 80
+          filename: "default"
+          return: "301 https://$host$request_uri"
+  post_tasks:
+    - name: Check if dhparam file was created
+      stat:
+        path: "{{ dhparam_file }}"
+      register: dhparam_stat
+    - name: Update nginx dhparam configuration
+      copy:
+        content: "ssl_dhparam {{ dhparam_file }};\n"
+        dest: /etc/nginx/dhparam.conf
+      when: dhparam_stat.stat.exists
+      notify: reload nginx
+    - name: Copy https rules
+      template:
+        src: templates/https_config.conf.j2
+        dest: /etc/nginx/https_config.conf
+      notify: reload nginx
+    - name: Copy nginx templates
+      template:
+        src: "{{ item }}"
+        dest: /etc/nginx/sites-enabled/{{ item | basename | regex_replace('\.j2','') }}
+      with_items:
+        - th73.ovh.conf.j2
+        - localhost_8001.conf.j2
+        - mirror.th73.ovh.conf.j2
+        - playground.th73.ovh.conf.j2
+        - git.th73.ovh.conf.j2
+      notify: reload nginx

@@ -1,0 +1,34 @@
+# {{ ansible_managed }}
+
+server {
+    listen 80;
+    listen 443 ssl;
+
+    server_name playground.th73.ovh;
+    root /srv/www/playground.th73.ovh;
+    index index.php index.html index.htm;
+
+    include https_config*.conf;
+
+    {% if nginx_disable_ssl is not defined %}
+    ssl_certificate /etc/letsencrypt/live/playground.th73.ovh/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/playground.th73.ovh/privkey.pem;
+    {% endif %}
+
+    if ($scheme != "https") {
+        return 301 https://$host$request_uri;
+    }
+
+    auth_basic "Restricted Content";
+    auth_basic_user_file .htpasswd;
+
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/var/run/php5-fpm.sock;
+    }
+
+    # htaccess files
+    location ~ /\.ht {
+        deny all;
+    }
+}

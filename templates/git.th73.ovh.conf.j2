@@ -1,0 +1,27 @@
+# {{ ansible_managed }}
+
+server {
+    listen 80;
+    listen 443 ssl;
+
+    server_name git.th73.ovh;
+    root /usr/share/cgit;
+    index index.html index.htm;
+
+    include https_config*.conf;
+
+    {% if nginx_disable_ssl is not defined %}
+    ssl_certificate /etc/letsencrypt/live/git.th73.ovh/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/git.th73.ovh/privkey.pem;
+    {% endif %}
+
+    try_files $uri @cgit;
+    location @cgit {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME /usr/lib/cgit/cgit.cgi;
+        fastcgi_param PATH_INFO $uri;
+        fastcgi_param QUERY_STRING $args;
+        fastcgi_param HTTP_HOST $server_name;
+        fastcgi_pass unix:/run/fcgiwrap.socket;
+    }
+}

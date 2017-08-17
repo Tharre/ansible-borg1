@@ -1,0 +1,24 @@
+# {{ ansible_managed }}
+
+server {
+    listen 80;
+    server_name mirror.th73.ovh;
+    index index.html index.htm;
+
+    autoindex on;
+
+    # Requests for package db and signature files should redirect upstream
+    # without caching
+    location ~ \.(db|sig|files)$ {
+        proxy_pass http://mirrors;
+        proxy_cache arch-pkg-cache;
+        proxy_cache_valid 200 5m;
+    }
+
+    location ~ \.pkg\.tar\.xz$ {
+        proxy_pass http://mirrors;
+        proxy_cache arch-pkg-cache;
+        proxy_cache_valid 200 302 1y;
+        proxy_cache_valid 404     5m;
+    }
+}
