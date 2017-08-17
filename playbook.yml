@@ -1,5 +1,5 @@
 ---
-- name: Install borg1 stuff
+- name: Install borg1 server
   hosts: all
   become: true
   tasks:
